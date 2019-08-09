@@ -52,7 +52,7 @@ object HiveDao {
 
 		df.registerTempTable("tmpMember")
 
-		val sql = "insert overwrite table `dwd`.`dwd_base_ad` partition(dn) select * from tmpMember"
+		val sql = "insert overwrite table `dwd`.`dwd_member` partition(dt,dn) select * from tmpMember"
 		spark.sql(sql)
 
 	}
