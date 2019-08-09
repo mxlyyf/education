@@ -1,11 +1,7 @@
-package com.mxl.education.etl
+package com.mxl.education.etl.app
 
-import org.apache.spark.rdd.RDD
-import com.alibaba.fastjson._
-import com.mxl.education.etl.bean.DwdMember
-import com.mxl.education.etl.dao.{HiveDao, WideTableDao}
-import com.mxl.education.etl.util.DesensitizedUtils
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import com.mxl.education.etl.dao.WideTableDao
+import org.apache.spark.sql.SparkSession
 
 object ETLApp {
 	def main(args: Array[String]): Unit = {
@@ -28,7 +24,8 @@ object ETLApp {
 		//HiveDao.DwdPcentermempaymoney(spark, sc)
 		//HiveDao.DwdVipLevel(spark, sc)
 
-		WideTableDao.DwsMember(spark,sc)
+		//WideTableDao.DwsMember(spark,"20190722")//宽表
+		WideTableDao.DwsMemberZipper(spark, "20190722") //拉链表
 
 		spark.close()
 	}
