@@ -2,7 +2,7 @@ package com.mxl.education.etl.dao
 
 import org.apache.spark.sql.SparkSession
 
-object AdsDao {
+object AdsDaoBySql {
 
 	//需求4：使用Spark DataFrame Api统计通过各注册跳转地址(appregurl)进行注册的用户数,有时间的再写Spark Sql
 	def queryRegisterAppregurlnum(spark: SparkSession, dt: String) = {
