@@ -2,7 +2,7 @@ package com.mxl.education.etl.bean
 
 import java.sql.Timestamp
 
-case class DwsMember(uid: Int,
+case class DwsMember(uid: Int, //dwd_member  begin
                      ad_id: Int,
                      fullname: String,
                      iconurl: String,
@@ -18,7 +18,8 @@ case class DwsMember(uid: Int,
                      unitname: String,
                      userip: String,
                      zipcode: String,
-                     appkey: String,
+
+                     appkey: String, //dwd_member_regtype begin
                      appregurl: String,
                      bdp_uuid: String,
                      reg_createtime: Timestamp,
@@ -26,14 +27,17 @@ case class DwsMember(uid: Int,
                      isranreg: String,
                      regsource: String,
                      regsourcename: String,
-                     adname: String,
-                     siteid: Int,
+
+                     adname: String, //dwd_base_ad begin
+
+                     siteid: Int,   //dwd_base_website begin
                      sitename: String,
                      siteurl: String,
                      site_delete: String,
                      site_createtime: String,
-                     site_creator: String,
-                     vip_id: Int,
+                     site_creator: String,//
+
+                     vip_id: Int,  //dwd_vip_level  begin
                      vip_level: String,
                      vip_start_time: Timestamp,
                      vip_end_time: Timestamp,
