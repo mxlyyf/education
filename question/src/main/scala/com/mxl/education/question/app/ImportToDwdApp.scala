@@ -18,7 +18,21 @@ object ImportToDwdApp {
 
 		//		ImportToDwdDao.dwdQzChapter(spark, sc)
 		//		ImportToDwdDao.dwdQzChapterList(spark, sc)
-		ImportToDwdDao.dwdQzPoint(spark, sc)
+		//		ImportToDwdDao.dwdQzPoint(spark, sc)
+		//		ImportToDwdDao.dwdQzPointQuestion(spark, sc)
+		//		ImportToDwdDao.dwdQzSiteCourse(spark, sc)
+		//		ImportToDwdDao.dwdQzCourse(spark, sc)
+		//		ImportToDwdDao.dwdQzCourseEduSubject(spark, sc)
+		//		ImportToDwdDao.dwdQzWebsite(spark, sc)
+		//		ImportToDwdDao.dwdQzMajor(spark, sc)
+		//		ImportToDwdDao.dwdQzBusiness(spark, sc)
+		//		ImportToDwdDao.dwdQzPaperView(spark, sc)
+		//		ImportToDwdDao.dwdQzCenterPaper(spark, sc)
+		//		ImportToDwdDao.DwdQzPaper(spark, sc)
+		//		ImportToDwdDao.dwdQzCenter(spark, sc)
+		//		ImportToDwdDao.dwdQzQuestion(spark, sc)
+		//		ImportToDwdDao.dwdQzQuestionType(spark, sc)
+		//		ImportToDwdDao.dwdQzMemberPaperQuestion(spark, sc)
 		spark.close()
 	}
 }

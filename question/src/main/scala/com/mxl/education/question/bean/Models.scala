@@ -50,7 +50,7 @@ case class DwdQzPoint(
 	                     pointdescribe: String,
 	                     pointlevel: String,
 	                     typelist: String,
-	                     score: BigDecimal,
+	                     score: Float,
 	                     thought: String,
 	                     remid: String,
 	                     pointnamelist: String,
@@ -104,7 +104,7 @@ case class DwdQzCourse(
 	                      dn: String)
 
 
-case class DwdQzCourseEdusubject(
+case class DwdQzCourseEduSubject(
 	                                courseeduid: Int,
 	                                edusubjectid: Int,
 	                                courseid: Int,
@@ -209,7 +209,7 @@ case class DwdQzPaper(
 	                     status: String,
 	                     creator: String,
 	                     createtime: Timestamp,
-	                     totalscore: BigDecimal,
+	                     totalscore: Float,
 	                     chapterid: Int,
 	                     chapterlistid: Int,
 	                     dt: String,
@@ -243,8 +243,8 @@ case class DwdQzQuestion(
 	                        answer: String,
 	                        analysis: String,
 	                        limitminute: String,
-	                        score: BigDecimal,
-	                        splitscore: BigDecimal,
+	                        score: Float,
+	                        splitscore: Float,
 	                        status: String,
 	                        optnum: Int,
 	                        lecture: String,
@@ -290,7 +290,7 @@ case class DwdQzMemberPaperQuestion(
 	                                   opertype: String,
 	                                   paperid: Int,
 	                                   spendtime: Int,
-	                                   score: BigDecimal,
+	                                   score: Float,
 	                                   question_answer: Int,
 	                                   dt: String,
 	                                   dn: String)
