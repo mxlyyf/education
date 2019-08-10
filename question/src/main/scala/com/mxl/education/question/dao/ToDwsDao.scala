@@ -113,20 +113,139 @@ object ToDwsDao {
 	def dwsUserPaperDetail(spark: SparkSession, dt: String) = {
 		val sql =
 			s"""
-			 |select *
-			 |from dwd.dwd_qz_member_paper_question a
-			 |inner join
-			 |	dws.dws_qz_chapter b on a.chapterid=b.chapterid and a.dt=b.dt and a.dn=b.dn
-			 |inner join
-			 |	dws.dws_qz_course c on a.sitecourseid=c.sitecourseid and a.dt=c.dt and a.dn=c.dn
-			 |inner join
-			 |	dws.dws_qz_major d on a.majorid=d.majorid and a.dt=d.dt and a.dn=d.dn
-			 |inner join
-			 |	dws.dws_qz_paper e on a.paperviewid=e.paperviewid and a.dt=e.dt and a.dn=a.dn
-			 |inner join
-			 |	dws.dws_qz_question f on a.questionid=f.questionid and a.dt=f.dt and a.dn=f.dn
-			 |where a.dt=${dt}
+				 |select
+				 |a.userid,
+				 |a.sitecourseid courseid,
+				 |a.questionid,
+				 |a.useranswer,
+				 |a.istrue,
+				 |a.lasttime,
+				 |a.opertype,
+				 |a.paperid,
+				 |a.spendtime,
+				 |a.chapterid,
+				 |b.chaptername,
+				 |b.chapternum,
+				 |b.chapterallnum,
+				 |b.outchapterid,
+				 |b.chapterlistname,
+				 |b.pointid,
+				 |b.questype,
+				 |b.pointyear,
+				 |b.chapter,
+				 |b.pointname,
+				 |b.excisenum,
+				 |b.pointdescribe,
+				 |b.pointlevel,
+				 |b.typelist,
+				 |b.point_score,
+				 |b.thought,
+				 |b.remid,
+				 |b.pointnamelist,
+				 |b.typelistids,
+				 |b.pointlist,
+				 |c.sitecourseid,
+				 |c.siteid,
+				 |c.sitecoursename,
+				 |c.coursechapter,
+				 |c.`sequence` course_sequence,
+				 |c.status course_stauts,
+				 |c.sitecourse_creator course_creator,
+				 |c.sitecourse_createtime course_createtime,
+				 |c.servertype,
+				 |c.helppaperstatus,
+				 |c.boardid,
+				 |c.showstatus,
+				 |d.majorid,
+				 |c.coursename,
+				 |c.isadvc,
+				 |c.chapterlistid,
+				 |c.pointlistid,
+				 |c.courseeduid,
+				 |c.edusubjectid,
+				 |d.businessid,
+				 |d.majorname,
+				 |d.shortname,
+				 |d.status major_status,
+				 |d.`sequence` major_sequence,
+				 |d.major_creator,
+				 |d.major_createtime,
+				 |d.businessname,
+				 |d.sitename,
+				 |d.`domain`,
+				 |d.multicastserver,
+				 |d.templateserver,
+				 |d.multicastgateway multicastgatway,
+				 |d.multicastport,
+				 |e.paperviewid,
+				 |e.paperviewname,
+				 |e.paperparam,
+				 |e.openstatus,
+				 |e.explainurl,
+				 |e.iscontest,
+				 |e.contesttime,
+				 |e.conteststarttime,
+				 |e.contestendtime,
+				 |e.contesttimelimit,
+				 |e.dayiid,
+				 |e.status paper_status,
+				 |e.paper_view_creator,
+				 |e.paper_view_createtime,
+				 |e.paperviewcatid,
+				 |e.modifystatus,
+				 |e.description,
+				 |e.paperuse,
+				 |e.testreport,
+				 |e.centerid,
+				 |e.`sequence` paper_sequence,
+				 |e.centername,
+				 |e.centeryear,
+				 |e.centertype,
+				 |e.provideuser,
+				 |e.centerviewtype,
+				 |e.stage paper_stage,
+				 |e.papercatid,
+				 |e.paperyear,
+				 |e.suitnum,
+				 |e.papername,
+				 |e.totalscore,
+				 |f.parentid question_parentid,
+				 |f.questypeid,
+				 |f.quesviewtype,
+				 |f.content question_content,
+				 |f.answer question_answer,
+				 |f.analysis question_analysis,
+				 |f.limitminute question_limitminute,
+				 |f.score,
+				 |f.splitscore,
+				 |f.lecture,
+				 |f.creator question_creator,
+				 |f.createtime question_createtime,
+				 |f.modifystatus question_modifystatus,
+				 |f.attanswer question_attanswer,
+				 |f.questag question_questag,
+				 |f.vanalysisaddr question_vanalysisaddr,
+				 |f.difficulty question_difficulty,
+				 |f.quesskill,
+				 |f.vdeoaddr,
+				 |f.description question_description,
+				 |f.splitscoretype question_splitscoretype,
+				 |f.answer user_question_answer,
+				 |a.dt,
+				 |a.dn
+				 |from dwd.dwd_qz_member_paper_question a
+				 |inner join
+				 |	dws.dws_qz_chapter b on a.chapterid=b.chapterid and a.dt=b.dt and a.dn=b.dn
+				 |inner join
+				 |	dws.dws_qz_course c on a.sitecourseid=c.sitecourseid and a.dt=c.dt and a.dn=c.dn
+				 |inner join
+				 |	dws.dws_qz_major d on a.majorid=d.majorid and a.dt=d.dt and a.dn=d.dn
+				 |inner join
+				 |	dws.dws_qz_paper e on a.paperviewid=e.paperviewid and a.dt=e.dt and a.dn=a.dn
+				 |inner join
+				 |	dws.dws_qz_question f on a.questionid=f.questionid and a.dt=f.dt and a.dn=f.dn
+				 |where a.dt=${dt}
 			""".stripMargin
-		spark.sql(sql).coalesce(4).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_user_paper_detail`")
+		spark.sql(sql).coalesce(20).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_user_paper_detail`")
 	}
 }
