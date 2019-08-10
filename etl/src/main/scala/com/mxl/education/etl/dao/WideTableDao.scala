@@ -2,7 +2,7 @@ package com.mxl.education.etl.dao
 
 import com.mxl.education.etl.bean.{DwsMemberZipper, DwsMemberZipperResult}
 import org.apache.spark.SparkContext
-import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
 object WideTableDao {
 
@@ -51,8 +51,10 @@ object WideTableDao {
 		val frame: DataFrame = spark.sql(selectSql)
 
 		frame.registerTempTable("tmp")
-
 		spark.sql("insert overwrite table `dws`.`dws_member` partition(dt,dn) select * from tmp")
+
+		//通过Api方式写入hive，可控制小文件过多问题
+		//frame.coalesce(1).write.mode(SaveMode.Overwrite).insertInto("dws.dws_member")
 	}
 
 	//拉链表
@@ -66,7 +68,7 @@ object WideTableDao {
 			s"dwd.dwd_vip_level b on a.vip_id=b.vip_id and a.dn=b.dn where a.dt='$dt' group by uid").as[DwsMemberZipper]
 
 		//2.查询历史拉链表数据
-		val historyResult = spark.sql("select * from dws.dws_member_zipper").as[DwsMemberZipper]
+		val historyResult: Dataset[DwsMemberZipper] = spark.sql("select * from dws.dws_member_zipper").as[DwsMemberZipper]
 
 		//两份数据根据用户id进行聚合 对end_time进行重新修改
 		val reuslt = dayResult.union(historyResult).groupByKey(item => item.uid + "_" + item.dn)

@@ -9,7 +9,7 @@ object AdsDaoByApi {
 	def queryMemberWideTable(spark: SparkSession, dt: String) = {
 		import spark.implicits._
 		spark.sql("select uid,ad_id,memberlevel,register,appregurl,regsource,regsourcename,adname," +
-			s"siteid,sitename,vip_level,cast(paymoney as decimal(10,4)) as paymoney,dt,dn from dws.dws_member where dt=${dt}")
+			s"siteid,sitename,vip_level,cast(paymoney as decimal(10,4)) as paymoney,dt,dn from dws.dws_member where dt=${dt} limit 10")
 			.as[QueryResult]
 			.cache()
 	}
@@ -30,7 +30,16 @@ object AdsDaoByApi {
 
 	//需求5：使用Spark DataFrame Api统计各所属网站（sitename）的用户数,有时间的再写Spark Sql
 	def queryRegisterSitenamenum(spark: SparkSession, dt: String) = {
+		import spark.implicits._
+		val ds: KeyValueGroupedDataset[String, (String, Int)] = queryMemberWideTable(spark, dt).map(result => {
+			(result.sitename + "_" + result.dn + "_" + result.dt, 1)
+		}).groupByKey(_._1)
 
+		ds.count().map {
+			case (key, n) =>
+				val arr = key.split("_")
+				(arr(0), arr(1), arr(2), n)
+		}.toDF().coalesce(1).write.mode(SaveMode.Overwrite).insertInto("ads.ads_register_sitename")
 	}
 
 	//需求6：使用Spark DataFrame Api统计各所属平台的（regsourcename）用户数,有时间的再写Spark Sql
