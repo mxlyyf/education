@@ -413,7 +413,7 @@ case class DwsQzPaper(
 	                     paperyear: String,
 	                     suitnum: String,
 	                     papername: String,
-	                     totalscore: BigDecimal,
+	                     totalscore: Float,
 	                     chapterid: Int,
 	                     chapterlistid: Int,
 	                     dt: String,

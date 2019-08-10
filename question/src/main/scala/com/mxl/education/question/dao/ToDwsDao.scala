@@ -60,7 +60,7 @@ object ToDwsDao {
 				 |	dwd.dwd_qz_website b on a.siteid=b.siteid and a.dt=b.dt and a.dn=b.dn
 				 |inner join
 				 |	dwd.dwd_qz_business c on a.siteid=c.siteid and a.dt=c.dt and a.dn=c.dn
-				 |where a.dt=${dt};
+				 |where a.dt=${dt}
 			""".stripMargin
 		spark.sql(sql).coalesce(1).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_qz_major`")
 	}
@@ -71,18 +71,62 @@ object ToDwsDao {
 	// inner join dwd.dwd_qz_paper join条件：paperid和dn
 	def dwsQzPaper(spark: SparkSession, dt: String) = {
 		val sql =
-			"""
-				|
+			s"""
+				 |select a.paperviewid,a.paperid,a.paperviewname,a.paperparam,a.openstatus,a.explainurl,a.iscontest,a.contesttime,
+				 |a.conteststarttime,a.contestendtime,a.contesttimelimit,a.dayiid,a.status,a.creator paper_view_creator,
+				 |a.createtime paper_view_createtime,a.paperviewcatid,a.modifystatus,a.description,a.paperuse,a.paperdifficult,
+				 |a.testreport,a.paperuseshow,b.centerid,b.`sequence`,b.centername,b.centeryear,b.centertype,b.provideuser,b.centerviewtype,
+				 |b.stage,d.papercatid,d.courseid,d.paperyear,d.suitnum,d.papername,d.totalscore,d.chapterid,d.chapterlistid,a.dt,a.dn
+				 |from dwd.dwd_qz_paper_view a
+				 |left join
+				 |	dwd.dwd_qz_center b on a.paperviewid=b.centerid and a.dt=b.dt and a.dn=b.dn
+				 |left join
+				 |	dwd.dwd_qz_center c on b.centerid=c.centerid and b.dt=c.dt and b.dn=c.dn
+				 |inner join
+				 |	dwd.dwd_qz_paper d on a.paperid=d.paperid and a.dt=d.dt and a.dn=d.dn
+				 |where a.dt=${dt}
 			""".stripMargin
-		spark.sql(sql).coalesce(1).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_qz_chapter`")
+		spark.sql(sql).coalesce(2).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_qz_paper`")
 	}
 
 	//dws.dws_qz_question:2表join  qz_quesiton inner join qz_questiontype  join条件:questypeid 和dn
 	def dwsQzQuestion(spark: SparkSession, dt: String) = {
 		val sql =
-			"""
-				|
+			s"""
+				 |select a.questionid,a.parentid,a.questypeid,a.quesviewtype,a.content,a.answer,a.analysis,a.limitminute,a.score,
+				 |a.splitscore,a.status,a.optnum,a.lecture,a.creator,a.createtime,a.modifystatus,a.attanswer,a.questag,a.vanalysisaddr,
+				 |a.difficulty,a.quesskill,a.vdeoaddr,a.quesviewtype,b.description,b.papertypename,b.splitscoretype,a.dt,a.dn
+				 |from dwd.dwd_qz_question a
+				 |inner join dwd.dwd_qz_question_type b on a.questypeid=b.questypeid and a.dt=b.dt and a.dn=b.dn
+				 |where a.dt=${dt}
 			""".stripMargin
-		spark.sql(sql).coalesce(1).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_qz_chapter`")
+		spark.sql(sql).coalesce(2).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_qz_question`")
+	}
+
+	//dws.user_paper_detail:
+	// dwd_qz_member_paper_question
+	// inner join dws_qz_chapter   join条件:chapterid 和dn ,
+	// inner join  dws_qz_course  join条件:sitecourseid和dn ,
+	// inner join dws_qz_major    join条件:majorid和dn,
+	// inner join dws_qz_paper    join条件:paperviewid和dn ,
+	// inner join dws_qz_question join条件:questionid和dn
+	def dwsUserPaperDetail(spark: SparkSession, dt: String) = {
+		val sql =
+			s"""
+			 |select *
+			 |from dwd.dwd_qz_member_paper_question a
+			 |inner join
+			 |	dws.dws_qz_chapter b on a.chapterid=b.chapterid and a.dt=b.dt and a.dn=b.dn
+			 |inner join
+			 |	dws.dws_qz_course c on a.sitecourseid=c.sitecourseid and a.dt=c.dt and a.dn=c.dn
+			 |inner join
+			 |	dws.dws_qz_major d on a.majorid=d.majorid and a.dt=d.dt and a.dn=d.dn
+			 |inner join
+			 |	dws.dws_qz_paper e on a.paperviewid=e.paperviewid and a.dt=e.dt and a.dn=a.dn
+			 |inner join
+			 |	dws.dws_qz_question f on a.questionid=f.questionid and a.dt=f.dt and a.dn=f.dn
+			 |where a.dt=${dt}
+			""".stripMargin
+		spark.sql(sql).coalesce(4).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_user_paper_detail`")
 	}
 }
