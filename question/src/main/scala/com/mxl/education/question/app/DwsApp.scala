@@ -21,7 +21,7 @@ object DwsApp {
 		//		ToDwsDao.dwsQzMajor(spark, "20190722")
 		//		ToDwsDao.dwsQzPaper(spark, "20190722")
 		//		ToDwsDao.dwsQzQuestion(spark, "20190722")
-				ToDwsDao.dwsUserPaperDetail(spark, "20190722")
+		ToDwsDao.dwsUserPaperDetail(spark, "20190722")
 
 		spark.close()
 	}

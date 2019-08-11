@@ -59,7 +59,7 @@ object ToDwsDao {
 				 |inner join
 				 |	dwd.dwd_qz_website b on a.siteid=b.siteid and a.dt=b.dt and a.dn=b.dn
 				 |inner join
-				 |	dwd.dwd_qz_business c on a.siteid=c.siteid and a.dt=c.dt and a.dn=c.dn
+				 |	dwd.dwd_qz_business c on a.businessid=c.businessid and a.dt=c.dt and a.dn=c.dn
 				 |where a.dt=${dt}
 			""".stripMargin
 		spark.sql(sql).coalesce(1).write.mode(SaveMode.Overwrite).insertInto("`dws`.`dws_qz_major`")
